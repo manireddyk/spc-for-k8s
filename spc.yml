@@ -1,0 +1,33 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: spc-service
+spec:
+  ports:
+    - port: 8080
+  selector:
+    app: spc
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spc-deploy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: spc
+  template:
+    metadata:
+      labels:
+        app: spc
+    spec:
+      containers:
+      - name: spc
+        image: jbrisbin/spring-petclinic:latest
+        ports: 
+          - containerPort: 8080
+            protocol: TCP
